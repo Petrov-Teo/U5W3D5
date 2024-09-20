@@ -12,7 +12,6 @@ public record EventoDto(
         @NotEmpty(message = "il campo titolo è obbligatorio")
         String titolo,
         @NotEmpty(message = "il campo descrizione è obbligatorio")
-
         String descrizione,
         @NotNull(message = "il campo data è obbligatorio")
         LocalDate dataEvento,

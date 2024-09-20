@@ -36,8 +36,8 @@ public class JWTChekFilter extends OncePerRequestFilter {
         
         jwtTools.verifyToken(accessToken);
         String id = jwtTools.extractDipendentefromTken(accessToken);
-        User userattuale = this.userService.findById(UUID.fromString(id));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userattuale, null, userattuale.getAuthorities());
+        User userAttuale = this.userService.findById(UUID.fromString(id));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userAttuale, null, userAttuale.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);// <-- associo l'utente autenticato al Context
 
         filterChain.doFilter(request, response);

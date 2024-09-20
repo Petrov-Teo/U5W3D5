@@ -32,9 +32,22 @@ public class EventoController {
     @Autowired
     UserService userService;
 
+    @GetMapping
+    public Page<Evento> findAll(@RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "10") int size,
+                                    @RequestParam(defaultValue = "idEvento") String sorteBy) {
+
+        return eventoService.findAll(page, size, sorteBy);
+    }
+
+    @GetMapping("/{idEvento}")
+    public Evento findById(@PathVariable UUID idEvento) {
+        return eventoService.findById(idEvento);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ORGANIZZATORE')") // SOLO ORGANIZZATORI POSSONO CREARE EVENTI
+    @PreAuthorize("hasAnyAuthority('ORGANIZZATORE', 'ADMIN')") // SOLO ORGANIZZATORI E ADMIN POSSONO CREARE EVENTI
     public EventoResponseDto saveEvento(@RequestBody @Validated EventoDto body,
                                         BindingResult validationResult,
                                         @AuthenticationPrincipal UserDetails userDetails) throws NotFoundException, BadRequestException {
@@ -46,34 +59,26 @@ public class EventoController {
             throw new BadRequestException("Controlla i seguenti errori: " + messages);
         }
 
-        return new EventoResponseDto(this.eventoService.saveEvento(body, userDetails.getUsername()).getId_evento());
+        return new EventoResponseDto(this.eventoService.saveEvento(body, userDetails.getUsername()).getIdEvento());
     }
 
     @GetMapping("/me")
-    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
+    @PreAuthorize("hasAnyAuthority('ORGANIZZATORE', 'ADMIN')")
     public List<Evento> getMyEvents(@AuthenticationPrincipal UserDetails userDetails) {
         // Trova l'utente nel database utilizzando lo username (email)
         User user = userService.findByEmail(userDetails.getUsername());
         return eventoService.findByOrganizzatore(user);
     }
 
-    @GetMapping
-    public Page<Evento> findAll(@RequestParam(defaultValue = "0") int page,
-                                    @RequestParam(defaultValue = "10") int size,
-                                    @RequestParam(defaultValue = "idDipendente") String sorteBy) {
-
-        return eventoService.findAll(page, size, sorteBy);
-    }
-
     @PutMapping("{idEvento}")
-    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
+    @PreAuthorize("hasAnyAuthority('ORGANIZZATORE', 'ADMIN')")
     public Evento findByIdAndUpdate(@PathVariable UUID idEvento, @RequestParam EventoDto body,@AuthenticationPrincipal UserDetails userDetails) throws BadRequestException, org.apache.coyote.BadRequestException {
 
         return this.eventoService.findAndUpdate(idEvento, body);
     }
 
     @DeleteMapping("{idEvento}")
-    @PreAuthorize("hasAuthority('ORGANIZZATORE')")// SOLO GI ADMIN POSSONO ELIMINARE LE RISORSE
+    @PreAuthorize("hasAnyAuthority('ORGANIZZATORE', 'ADMIN')") // SOLO GI ADMIN POSSONO ELIMINARE LE RISORSE
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDipendente(@PathVariable UUID idEvento) {
         eventoService.findAndDelete(idEvento);
