@@ -1,5 +1,6 @@
 package PetrovTodor.Gestione_Eventi_Final.services;
 
+import PetrovTodor.Gestione_Eventi_Final.entities.Evento;
 import PetrovTodor.Gestione_Eventi_Final.entities.User;
 import PetrovTodor.Gestione_Eventi_Final.exceptions.NotFoundException;
 import PetrovTodor.Gestione_Eventi_Final.exceptions.UnauthorizedException;
@@ -11,8 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,6 +23,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    PasswordEncoder bcrypt;
 
     public User save(UserDto body) throws BadRequestException {
         if (userRepository.findByEmail(body.email()).isPresent()) {
@@ -30,7 +35,7 @@ public class UserService {
                 body.cognome(),
                 body.dataDiNascita(),
                 body.email(),
-                body.password());
+                bcrypt.encode(body.password()));
 
         if (user.getEta()<18){
             throw new UnauthorizedException(body.nome() + "Non puo proseguire con la registrazione perché ancora minorenne!");
@@ -60,7 +65,8 @@ public class UserService {
         found.setNome(body.nome());
         found.setCognome(body.cognome());
         found.setEmail(body.email());
-        found.setPassword(body.password());
+        found.setPassword( bcrypt.encode(body.password()));
         return this.userRepository.save(found);
     }
+
 }

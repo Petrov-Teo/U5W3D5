@@ -10,15 +10,13 @@ import java.util.UUID;
 
 public record EventoDto(
         @NotEmpty(message = "il campo titolo è obbligatorio")
-        @Size(min = 5,max = 35)
         String titolo,
         @NotEmpty(message = "il campo descrizione è obbligatorio")
-        @Size(min = 25,max = 255)
+
         String descrizione,
-        @NotEmpty(message = "il campo Data Evento è obbligatorio")
+        @NotNull(message = "il campo data è obbligatorio")
         LocalDate dataEvento,
-        @NotNull(message = "il campo titolo è obbligatorio")
-        int numeroPosti,
-        @NotNull(message = "il campo titolo è obbligatorio")
-        User organizzatore) {
+        @NotNull(message = "il campo numero posti è obbligatorio")
+        int numeroPosti)
+       {
 }

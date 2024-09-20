@@ -1,9 +1,6 @@
 package PetrovTodor.Gestione_Eventi_Final.services;
-
-import PetrovTodor.Gestione_Eventi_Final.entities.Evento;
 import PetrovTodor.Gestione_Eventi_Final.entities.Prenotazione;
 import PetrovTodor.Gestione_Eventi_Final.exceptions.NotFoundException;
-import PetrovTodor.Gestione_Eventi_Final.payload.EventoDto;
 import PetrovTodor.Gestione_Eventi_Final.payload.responsPayload.PrenotazioneDto;
 import PetrovTodor.Gestione_Eventi_Final.repositorys.PrenotazioneRepository;
 
