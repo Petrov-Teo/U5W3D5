@@ -1,6 +1,7 @@
 package PetrovTodor.Gestione_Eventi_Final.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,14 +15,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "eventi")
 @Entity
+@JsonIgnoreProperties( { "authorities", "enabled", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "credentialsNonExpired"})
 public class Evento {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
-    private UUID id_evento;
+    private UUID idEvento;
     private String titolo;
     private String descrizione;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dataEvento;
     private int numeroPosti;
 
