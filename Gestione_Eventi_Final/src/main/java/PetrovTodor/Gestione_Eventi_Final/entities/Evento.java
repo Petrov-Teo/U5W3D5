@@ -1,5 +1,6 @@
 package PetrovTodor.Gestione_Eventi_Final.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class Evento {
     private UUID id_evento;
     private String titolo;
     private String descrizione;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dataEvento;
     private int numeroPosti;
 

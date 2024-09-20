@@ -31,6 +31,7 @@ public class User implements UserDetails {
     private LocalDate dataDiNascita;
     private String email;
     private String password;
+    @Enumerated(EnumType.STRING)
     private Ruolo ruolo;
 
     public User(String nome, String cognome, LocalDate dataDiNascita, String email, String password) {
