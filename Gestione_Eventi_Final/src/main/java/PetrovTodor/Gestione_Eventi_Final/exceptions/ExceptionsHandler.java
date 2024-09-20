@@ -2,6 +2,7 @@ package PetrovTodor.Gestione_Eventi_Final.exceptions;
 
 
 
+import PetrovTodor.Gestione_Eventi_Final.payload.ErrorsPayloadRecord;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
