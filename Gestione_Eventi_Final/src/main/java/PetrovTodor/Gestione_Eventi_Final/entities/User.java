@@ -3,9 +3,7 @@ package PetrovTodor.Gestione_Eventi_Final.entities;
 import PetrovTodor.Gestione_Eventi_Final.entities.enums.Ruolo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,13 +16,15 @@ import java.util.UUID;
 
 @Getter
 @Entity
+@Setter
 @NoArgsConstructor
 @ToString
 @Table(name = "utenti")
 @JsonIgnoreProperties({"password", "role", "authorities", "enabled", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "credentialsNonExpired"})
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private UUID id_user;
     private String nome;
     private String cognome;
@@ -50,5 +50,9 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    public int getEta() {
+        return LocalDate.now().getYear() - this.dataDiNascita.getYear();
     }
 }
